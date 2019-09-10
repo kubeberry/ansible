@@ -1,0 +1,5 @@
+---
+raspbian_download_dest_file: "/tmp/kubeberry/raspbian_lite_latest.zip"
+raspbian_download_url: https://downloads.raspberrypi.org/raspbian_lite_latest
+raspbian_img_tmp_dir: "{{ raspbian_tmp_dir }}/img"
+raspbian_tmp_dir: /tmp/kubeberry/raspbian

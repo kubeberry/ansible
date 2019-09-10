@@ -1,0 +1,46 @@
+---
+#
+# https://www.raspberrypi.org/documentation/installation/installing-images/linux.md
+# https://raspberrypi.stackexchange.com/a/99531/31668
+# https://raspberrypi.stackexchange.com/questions/37920/how-do-i-set-up-networking-wifi-static-ip-address
+#
+- hosts: localhost
+  gather_facts: no
+
+  vars:
+    ip_address: 1.2.3.4
+
+  roles:
+    - raspbian
+
+  tasks:
+
+    - name: Enable Ssh (by touching '{{ raspbian_img_tmp_dir }}/boot/ssh')
+      file:
+        path: "{{ raspbian_img_tmp_dir }}/boot/ssh"
+        state: touch
+      become: yes
+      
+    - name:
+      blockinfile:
+        path: "{{ raspbian_img_tmp_dir }}/etc/dhcpcd.conf"
+        block: |
+          interface eth0
+          static ip_address={{ ip_address }}/24
+      become: yes
+
+    - name: Unmount 'boot' partition '{{ raspbian_img_tmp_dir }}/boot'
+      mount:
+        path: "{{ raspbian_img_tmp_dir }}/boot"
+        src: "{{ loop_device }}p1"
+        fstype: vfat
+        state: unmounted
+      become: yes
+
+    - name: Unmount 'root' partition '{{ raspbian_img_tmp_dir}}'
+      mount:
+        path: "{{ raspbian_img_tmp_dir }}"
+        src: "{{ loop_device }}p2"
+        fstype: ext4
+        state: unmounted
+      become: yes

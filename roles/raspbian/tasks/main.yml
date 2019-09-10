@@ -1,0 +1,6 @@
+---
+- import_tasks: download.yml
+
+- import_tasks: unarchive_image.yml
+
+- import_tasks: mount_image_partitions.yml

@@ -1,0 +1,11 @@
+---
+- name: raspbian - Creates '{{ raspbian_tmp_dir }}' Raspbian temp directory
+  file:
+    path: "{{ raspbian_tmp_dir }}"
+    state: directory
+
+- name: raspbian - Downloads Raspbian from '{{ raspbian_download_url }}' to '{{ raspbian_download_dest_file }}'
+  get_url:
+    url: "{{ raspbian_download_url }}"
+    dest: "{{ raspbian_download_dest_file }}"
+    force: no
