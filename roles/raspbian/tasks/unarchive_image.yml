@@ -3,12 +3,16 @@
   unarchive:
     src: "{{ raspbian_download_dest_file }}"
     dest: "{{ raspbian_tmp_dir }}"
+    #creates: "{{ raspbian_tmp_dir }}"
 
-- name: raspbian - Finds Raspbian '*.img' file
+- name: raspbian - Finds Raspbian '*.img' file in '{{ raspbian_tmp_dir }}'
   find:
     paths: "{{ raspbian_tmp_dir }}"
     patterns: '*.img'
   register: reg_find_img
+
+- debug:
+    var:  reg_find_img
 
 - name: raspbian - Sets variable 'raspbian_img_file' to '{{ reg_find_img.files[0]['path'] }}'
   set_fact:
