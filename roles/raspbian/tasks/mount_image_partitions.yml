@@ -8,18 +8,31 @@
   set_fact:
     loop_device: "{{ reg_losetup.stdout }}"
 
-- name: raspbian - Mounts 'root' partition '{{ loop_device }}p2' to '{{ raspbian_img_tmp_dir }}'
-  mount:
+- name: raspbian - Creates image directory
+  file:
     path: "{{ raspbian_img_tmp_dir }}"
-    src: "{{ loop_device }}p2"
-    fstype: ext4
-    state: mounted
+    state: directory
+
+- name: raspbian - Mounts partitions
+  shell: |
+    sleep 5
+    mount {{ loop_device }}p2 {{ raspbian_img_tmp_dir }}
+    sleep 5
+    mount {{ loop_device }}p1 {{ raspbian_img_tmp_dir }}/boot
   become: yes
 
-- name: raspbian - Mounts 'boot' partition '{{ loop_device }}p1' to '{{ raspbian_img_tmp_dir }}/boot'
-  mount:
-    path: "{{ raspbian_img_tmp_dir }}/boot"
-    src: "{{ loop_device }}p1"
-    fstype: vfat
-    state: mounted
-  become: yes
+# - name: raspbian - Mounts 'root' partition '{{ loop_device }}p2' to '{{ raspbian_img_tmp_dir }}'
+#   mount:
+#     path: "{{ raspbian_img_tmp_dir }}"
+#     src: "{{ loop_device }}p2"
+#     fstype: ext4
+#     state: mounted
+#   become: yes
+
+# - name: raspbian - Mounts 'boot' partition '{{ loop_device }}p1' to '{{ raspbian_img_tmp_dir }}/boot'
+#   mount:
+#     path: "{{ raspbian_img_tmp_dir }}/boot"
+#     src: "{{ loop_device }}p1"
+#     fstype: vfat
+#     state: mounted
+#   become: yes

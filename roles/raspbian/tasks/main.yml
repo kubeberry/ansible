@@ -1,6 +1,14 @@
 ---
 - import_tasks: download.yml
+  tags:
+    - download
 
 - import_tasks: unarchive_image.yml
+  tags:
+    - unarchive
 
-- import_tasks: mount_image_partitions.yml
+- include_tasks: settings_and_write_image.yml
+  vars:
+    node: "{{ item }}"
+  with_items:
+    - "{{ groups[group] }}"
