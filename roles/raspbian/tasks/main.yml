@@ -8,7 +8,7 @@
     - unarchive
 
 - include_tasks: settings_and_write_image.yml
-  vars: 
+  vars:
     node: "{{ item }}"
   with_items:
     - "{{ groups[group] }}"

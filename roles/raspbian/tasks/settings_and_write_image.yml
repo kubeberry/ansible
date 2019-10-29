@@ -1,5 +1,6 @@
 ---
-- pause:
+- name: raspbian - Prompts to insert micro sd card
+  pause:
     prompt: "Insert Micro SD Card for '{{ node }}'"
 
 - import_tasks: mount_image_partitions.yml
@@ -9,7 +10,7 @@
     path: "{{ raspbian_img_tmp_dir }}/boot/ssh"
     state: touch
   become: yes
-  
+
 - name: raspbian - Configures '{{ raspbian_img_tmp_dir }}/etc/dhcpcd.conf' for node '{{ node }}'
   blockinfile:
     path: "{{ raspbian_img_tmp_dir }}/etc/dhcpcd.conf"
@@ -26,7 +27,7 @@
     state: unmounted
   become: yes
 
-- name: Unmount 'root' partition '{{ raspbian_img_tmp_dir}}'
+- name: Unmount 'root' partition '{{ raspbian_img_tmp_dir }}'
   mount:
     path: "{{ raspbian_img_tmp_dir }}"
     src: "{{ loop_device }}p2"
@@ -39,5 +40,6 @@
     dd bs=4M if={{ raspbian_img_file }} of={{ device }} conv=fsync
   become: yes
 
-- pause:
+- name: raspbian - Prompts to eject micro sd card
+  pause:
     prompt: "Eject Micro SD Card for '{{ node }}'"

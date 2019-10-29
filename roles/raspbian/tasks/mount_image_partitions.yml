@@ -18,8 +18,9 @@
     sleep 5
     mount {{ loop_device }}p2 {{ raspbian_img_tmp_dir }}
     sleep 5
-    mount {{ loop_device }}p1 {{ raspbian_img_tmp_dir }}/boot  
+    mount {{ loop_device }}p1 {{ raspbian_img_tmp_dir }}/boot
   become: yes
+
 # - name: raspbian - Mounts 'root' partition '{{ loop_device }}p2' to '{{ raspbian_img_tmp_dir }}'
 #   mount:
 #     path: "{{ raspbian_img_tmp_dir }}"
